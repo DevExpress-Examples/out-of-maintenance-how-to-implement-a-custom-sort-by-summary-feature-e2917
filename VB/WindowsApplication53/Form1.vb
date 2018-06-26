@@ -25,39 +25,28 @@ Namespace WindowsApplication53
         End Sub
         Private Sub PopulateTable()
             Dim myTable As DataTable = dataSet1.Tables("Data")
-            myTable.Rows.Add(New Object() { "Xxx", Date.Today, 7 })
-            myTable.Rows.Add(New Object() { "Xxx", Date.Today.AddDays(1), 4 })
-            myTable.Rows.Add(New Object() { "Bbb", Date.Today, 12 })
-            myTable.Rows.Add(New Object() { "Bbb", Date.Today.AddDays(1), 14 })
-            myTable.Rows.Add(New Object() { "Ccc", Date.Today, 11 })
-            myTable.Rows.Add(New Object() { "Ccc", Date.Today.AddDays(1), 10 })
+            myTable.Rows.Add(New Object() {"Xxx", Date.Today, 7})
+            myTable.Rows.Add(New Object() {"Xxx", Date.Today.AddDays(1), 4})
+            myTable.Rows.Add(New Object() {"Bbb", Date.Today, 12})
+            myTable.Rows.Add(New Object() {"Bbb", Date.Today.AddDays(1), 14})
+            myTable.Rows.Add(New Object() {"Ccc", Date.Today, 11})
+            myTable.Rows.Add(New Object() {"Ccc", Date.Today.AddDays(1), 10})
 
-            myTable.Rows.Add(New Object() { "Xxx", Date.Today.AddYears(1), 4 })
-            myTable.Rows.Add(New Object() { "Xxx", Date.Today.AddYears(1).AddDays(1), 2 })
-            myTable.Rows.Add(New Object() { "Bbb", Date.Today.AddYears(1), 3 })
-            myTable.Rows.Add(New Object() { "Bbb", Date.Today.AddDays(1).AddYears(1), 1 })
-            myTable.Rows.Add(New Object() { "Ccc", Date.Today.AddYears(1), 2 })
-            myTable.Rows.Add(New Object() { "Ccc", Date.Today.AddDays(1).AddYears(1), 1 })
+            myTable.Rows.Add(New Object() {"Xxx", Date.Today.AddYears(1), 4})
+            myTable.Rows.Add(New Object() {"Xxx", Date.Today.AddYears(1).AddDays(1), 2})
+            myTable.Rows.Add(New Object() {"Bbb", Date.Today.AddYears(1), 3})
+            myTable.Rows.Add(New Object() {"Bbb", Date.Today.AddDays(1).AddYears(1), 1})
+            myTable.Rows.Add(New Object() {"Ccc", Date.Today.AddYears(1), 2})
+            myTable.Rows.Add(New Object() {"Ccc", Date.Today.AddDays(1).AddYears(1), 1})
 
-            myTable.Rows.Add(New Object() { "Bbb", Date.Today.AddYears(1), 0 })
-            myTable.Rows.Add(New Object() { "Bbb", Date.Today.AddDays(1).AddYears(1), 0 })
-            myTable.Rows.Add(New Object() { "Ccc", Date.Today.AddYears(1), 0 })
-            myTable.Rows.Add(New Object() { "Ccc", Date.Today.AddDays(1).AddYears(1), 0 })
+            myTable.Rows.Add(New Object() {"Bbb", Date.Today.AddYears(1), 0})
+            myTable.Rows.Add(New Object() {"Bbb", Date.Today.AddDays(1).AddYears(1), 0})
+            myTable.Rows.Add(New Object() {"Ccc", Date.Today.AddYears(1), 0})
+            myTable.Rows.Add(New Object() {"Ccc", Date.Today.AddDays(1).AddYears(1), 0})
 
-            myTable.Rows.Add(New Object() { "Ccc", Date.Today.AddYears(1), 0 })
-            myTable.Rows.Add(New Object() { "Ccc", Date.Today.AddDays(1).AddYears(1), 3 })
+            myTable.Rows.Add(New Object() {"Ccc", Date.Today.AddYears(1), 0})
+            myTable.Rows.Add(New Object() {"Ccc", Date.Today.AddDays(1).AddYears(1), 3})
 
-
-
-        End Sub
-
-        Private Sub checkEdit1_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles checkEdit1.CheckedChanged
-            If checkEdit1.Checked Then
-                fieldName.SortBySummaryInfo.FieldName = "Value"
-                fieldName.SortBySummaryInfo.SummaryType = DevExpress.Data.PivotGrid.PivotSummaryType.Custom
-            Else
-                fieldName.SortBySummaryInfo.Reset()
-            End If
         End Sub
 
         Private Sub pivotGridControl1_CustomSummary(ByVal sender As Object, ByVal e As DevExpress.XtraPivotGrid.PivotGridCustomSummaryEventArgs) Handles pivotGridControl1.CustomSummary
@@ -76,7 +65,7 @@ Namespace WindowsApplication53
 
                     Dim tag_Renamed As New CustomSortBySummaryTag()
                     tag_Renamed.Pair = pair
-                    tag_Renamed.Condition = e.HitInfo.ValueInfo.Data.VisualItems.GetFieldSortConditions(e.HitInfo.ValueInfo.IsColumn, e.HitInfo.ValueInfo.Item.Index)
+                    tag_Renamed.Condition = e.HitInfo.ValueInfo.Item.GetFieldSortConditions()
                     item.Tag = tag_Renamed
                 End If
             Next item
@@ -92,21 +81,25 @@ Namespace WindowsApplication53
 
             Dim tag_Renamed As CustomSortBySummaryTag = TryCast(item.Tag, CustomSortBySummaryTag)
             If tag_Renamed IsNot Nothing Then
-                SetFieldSortBySummary(tag_Renamed.Pair.Field, tag_Renamed.Pair.DataField, tag_Renamed.Condition, item.Checked)
+                SetFieldSortBySummary(tag_Renamed.Pair.FieldItem, tag_Renamed.Pair.DataFieldItem, tag_Renamed.Condition, item.Checked)
             End If
         End Sub
 
-        Private Sub SetFieldSortBySummary(ByVal field As PivotGridFieldBase, ByVal dataField As PivotGridFieldBase, ByVal condition As List(Of PivotGridFieldSortCondition), ByVal sort As Boolean)
-            If Not field.CanSortBySummary Then
+        Private Sub SetFieldSortBySummary(ByVal fieldItem As PivotFieldItemBase, ByVal dataFieldItem As PivotFieldItemBase, ByVal condition As List(Of PivotGridFieldSortCondition), ByVal sort As Boolean)
+            'The following code can be used to access the actual PivotGridField object. The PivotFieldItem class Is used to support asynchronous operations.
+            'Dim field As PivotGridField = CType(pivotGridControl1, IPivotGridViewInfoDataOwner).DataViewInfo.GetField(fieldItem)
+
+
+            If Not fieldItem.CanSortBySummary Then
                 Return
             End If
             If sort Then
-                field.SortBySummaryInfo.FieldName = dataField.FieldName
-                field.SortBySummaryInfo.SummaryType = DevExpress.Data.PivotGrid.PivotSummaryType.Count
-                field.SortBySummaryInfo.Conditions.Clear()
-                field.SortBySummaryInfo.Conditions.AddRange(condition)
+                fieldItem.SortBySummaryInfo.FieldName = dataFieldItem.FieldName
+                fieldItem.SortBySummaryInfo.SummaryType = DevExpress.Data.PivotGrid.PivotSummaryType.Count
+                fieldItem.SortBySummaryInfo.Conditions.Clear()
+                fieldItem.SortBySummaryInfo.Conditions.AddRange(condition)
             Else
-                field.SortBySummaryInfo.Reset()
+                fieldItem.SortBySummaryInfo.Reset()
             End If
         End Sub
 
@@ -122,6 +115,12 @@ Namespace WindowsApplication53
             End If
         End Sub
 
+        Private Sub SimpleButton1_Click(sender As Object, e As EventArgs) Handles SimpleButton1.Click
+            fieldName.SortBySummaryInfo.Reset()
+
+            fieldName.SortBySummaryInfo.FieldName = "Value"
+            fieldName.SortBySummaryInfo.SummaryType = DevExpress.Data.PivotGrid.PivotSummaryType.Custom
+        End Sub
     End Class
 
     Public Class CustomSortBySummaryTag
