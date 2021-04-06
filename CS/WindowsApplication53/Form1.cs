@@ -84,15 +84,18 @@ namespace WindowsApplication53 {
             //The following code can be used to access the actual PivotGridField object. The PivotFieldItem class is used to support asynchronous operations.
             //PivotGridField field = ((IPivotGridViewInfoDataOwner)pivotGridControl1).DataViewInfo.GetField(fieldItem);
 
-            if (!fieldItem.CanSortBySummary) return;
+            if (!fieldItem.CanSortBySummary) 
+                return;
+            
+            PivotGridField field = pivotGridControl1.Fields.GetFieldByName(fieldItem.Name);
             if (sort) {
-                fieldItem.SortBySummaryInfo.FieldName = dataFieldItem.FieldName;
-                fieldItem.SortBySummaryInfo.SummaryType = DevExpress.Data.PivotGrid.PivotSummaryType.Count;
-                fieldItem.SortBySummaryInfo.Conditions.Clear();
-                fieldItem.SortBySummaryInfo.Conditions.AddRange(condition);
+                field.SortBySummaryInfo.FieldName = dataFieldItem.FieldName;
+                field.SortBySummaryInfo.SummaryType = DevExpress.Data.PivotGrid.PivotSummaryType.Count;
+                field.SortBySummaryInfo.Conditions.Clear();
+                field.SortBySummaryInfo.Conditions.AddRange(condition);
             }
             else {
-                fieldItem.SortBySummaryInfo.Reset();
+                field.SortBySummaryInfo.Reset();
             }
         }
 

@@ -95,13 +95,16 @@ Namespace WindowsApplication53
             If Not fieldItem.CanSortBySummary Then
                 Return
             End If
+
+            Dim field As PivotGridField = pivotGridControl1.Fields.GetFieldByName(fieldItem.Name)
+
             If sort Then
-                fieldItem.SortBySummaryInfo.FieldName = dataFieldItem.FieldName
-                fieldItem.SortBySummaryInfo.SummaryType = DevExpress.Data.PivotGrid.PivotSummaryType.Count
-                fieldItem.SortBySummaryInfo.Conditions.Clear()
-                fieldItem.SortBySummaryInfo.Conditions.AddRange(condition)
+                field.SortBySummaryInfo.FieldName = dataFieldItem.FieldName
+                field.SortBySummaryInfo.SummaryType = DevExpress.Data.PivotGrid.PivotSummaryType.Count
+                field.SortBySummaryInfo.Conditions.Clear()
+                field.SortBySummaryInfo.Conditions.AddRange(condition)
             Else
-                fieldItem.SortBySummaryInfo.Reset()
+                field.SortBySummaryInfo.Reset()
             End If
         End Sub
 
