@@ -96,10 +96,10 @@ namespace WindowsApplication53
             if (item == null ) return ;
             CustomSortBySummaryTag tag = item.Tag as CustomSortBySummaryTag;
             if (tag != null)
-                SetFieldSortBySummary(tag.Pair.Field, tag.Pair.DataField, tag.Condition, item.Checked);
+                SetFieldSortBySummary(tag.Pair.FieldItem, tag.Pair.DataFieldItem, tag.Condition, item.Checked);
         }
 
-        private void SetFieldSortBySummary(PivotGridFieldBase field, PivotGridFieldBase dataField, List<PivotGridFieldSortCondition> condition, bool sort)
+        private void SetFieldSortBySummary(PivotFieldItemBase field, PivotFieldItemBase dataField, List<PivotGridFieldSortCondition> condition, bool sort)
         {
             if (!field.CanSortBySummary) return;
             if (sort)
