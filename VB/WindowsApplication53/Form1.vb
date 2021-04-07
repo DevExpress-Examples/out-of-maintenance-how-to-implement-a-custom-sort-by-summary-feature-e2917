@@ -92,11 +92,11 @@ Namespace WindowsApplication53
 
             Dim tag_Renamed As CustomSortBySummaryTag = TryCast(item.Tag, CustomSortBySummaryTag)
             If tag_Renamed IsNot Nothing Then
-                SetFieldSortBySummary(tag_Renamed.Pair.Field, tag_Renamed.Pair.DataField, tag_Renamed.Condition, item.Checked)
+                SetFieldSortBySummary(tag_Renamed.Pair.FieldItem, tag_Renamed.Pair.DataFieldItem, tag_Renamed.Condition, item.Checked)
             End If
         End Sub
 
-        Private Sub SetFieldSortBySummary(ByVal field As PivotGridFieldBase, ByVal dataField As PivotGridFieldBase, ByVal condition As List(Of PivotGridFieldSortCondition), ByVal sort As Boolean)
+        Private Sub SetFieldSortBySummary(ByVal field As PivotFieldItemBase, ByVal dataField As PivotFieldItemBase, ByVal condition As List(Of PivotGridFieldSortCondition), ByVal sort As Boolean)
             If Not field.CanSortBySummary Then
                 Return
             End If
